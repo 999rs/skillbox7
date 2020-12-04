@@ -10,7 +10,7 @@ namespace NoteBook
     {
         static void Main(string[] args)
         {
-            NoteBook currentNoteBook = new NoteBook("MyNoteBook");
+
             /// Разработать ежедневник.
             /// В ежедневнике реализовать возможность 
             /// - создания
@@ -27,22 +27,22 @@ namespace NoteBook
             /// - Импорт записей по выбранному диапазону дат
             /// - Упорядочивания записей ежедневника по выбранному полю
 
-            Menu.importNoteBook(currentNoteBook, "redalert.dat");
-            //Menu.importNoteBook(currentNoteBook, "alert2.dat");
 
+            // создаем книгу
+            NoteBook currentNoteBook = new NoteBook("MyNoteBook");
+            
+
+            
+            // можно использовать для первоначальной загрузки книги без ввода имени
+            // фала в консоли
+            // Menu.importNoteBook(currentNoteBook, "alert.dat");  
+
+            // Запуск меню
             Menu.drawMainMenu(currentNoteBook);
 
-
-
-
-
-
-
-
-
         }
-        
-      //  private static List<NoteBookRecord> currentNoteBook = new List<NoteBookRecord>();
+       
+
     }
 
 }

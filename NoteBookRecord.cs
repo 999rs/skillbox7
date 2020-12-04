@@ -9,24 +9,34 @@ using static System.Console;
 
 namespace NoteBook
 {
+    /// <summary>
+    /// структура записи, инкапсулирует собственные свойства и методы. Аксессоры к полям
+    /// </summary>
     [Serializable]
     public struct NoteBookRecord
     {
+        /// <summary>
+        /// уникальный Ид записи
+        /// </summary>
         public Guid Id { get; }
-        public DateTime Cdate { get; }
-        public DateTime Mdate { get; private set; }
+        /// <summary>
+        /// дата создания.
+        /// </summary>
+        public DateTime Cdate { get; } 
+        /// <summary>
+        /// дата последнего изменения
+        /// </summary>
+        public DateTime Mdate { get; private set; }  
 
         private string _Title ;
+        /// <summary>
+        /// заголовок записи
+        /// </summary> 
         public string Title
         {
             get { return this._Title; }
             set
             {
-                if (value.Contains(";"))
-                {
-                    value = value.Replace(";", "");
-                    WriteLine("Из заголовка вырезан символ разделитель \";\" ");
-                }
                 
                 this._Title = value;
                 updateMdate();
@@ -36,16 +46,14 @@ namespace NoteBook
         }
 
         private string _Text;
+        /// <summary>
+        /// текст записи
+        /// </summary>
         public string Text
         {
             get { return this._Text; }
             set
             {
-                if (value.Contains(";"))
-                {
-                    value = value.Replace(";", "");
-                    WriteLine("Из текста вырезан символ разделитель \";\"");
-                }
                 
                 this._Text = value;
                 updateMdate();
@@ -53,6 +61,12 @@ namespace NoteBook
 
             }
         }
+
+        /// <summary>
+        /// конструктор
+        /// </summary>
+        /// <param name="title">заголовок</param>
+        /// <param name="text">текст</param>
         public NoteBookRecord(string title = "", string text = "") 
         {
             this.Id = Guid.NewGuid();
@@ -68,12 +82,17 @@ namespace NoteBook
         }
          
 
-
+        /// <summary>
+        /// обновляет дату модификации, используется в сеттерах
+        /// </summary>
         private void updateMdate()
         {
             this.Mdate = DateTime.Now;
         }
 
+        /// <summary>
+        /// выводит на консоль данные записи
+        /// </summary>
         public void printRecord()
         {
             //WriteLine($"{"Guid",50}{"Modification date",25}{"Creation Date",25}");
