@@ -28,6 +28,7 @@ namespace NoteBook
             /// - Упорядочивания записей ежедневника по выбранному полю
 
             Menu.importNoteBook(currentNoteBook, "redalert.dat");
+            //Menu.importNoteBook(currentNoteBook, "alert2.dat");
 
             Menu.drawMainMenu(currentNoteBook);
 

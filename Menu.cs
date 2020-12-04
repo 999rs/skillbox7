@@ -21,15 +21,16 @@ namespace NoteBook
             {
                 Console.Clear();
                 WriteLine("MENU:");
-                WriteLine("[1]: Add new Record +");
-                WriteLine("[2]: Edit Mode ");
-                //WriteLine("[3]: Delete Record +");
-                WriteLine("[p]: Print Book +");
-                WriteLine("[e]: Export book to file +");
-                WriteLine("[c]: Clear book (delete all records) +");
-                WriteLine("[i]: Import book file (add ALL new records) +");
-                WriteLine("[idate]: Import from book file (add new records in specific Range) ");
-                WriteLine("[q]: Quit program +");
+                WriteLine("[1]:     Add new Record +");
+                WriteLine("[2]:     Edit Mode +");
+                WriteLine("[sort]:  Sort Mode");  // todo
+                //WriteLine("[3]:  Delete Record +");
+                WriteLine("[p]:     Print Book +");
+                WriteLine("[e]:     Export book to file +");
+                WriteLine("[c]:     Clear book (delete all records) +");
+                WriteLine("[i]:     Import book file (add ALL new records) +");
+                WriteLine("[idate]: Import from book file (add new records in specific Range) "); // todo
+                WriteLine("[q]:     Quit program +");
                 input = ReadLine();
 
                 Console.Clear();
@@ -72,7 +73,11 @@ namespace NoteBook
                             navigate(book);
                             break;
                         }
-
+                    case "sort":
+                        {
+                            sortMenu(book);
+                            break;
+                        }
                     default:
                         {
                             
@@ -295,11 +300,18 @@ namespace NoteBook
 
         public static void editRecord(NoteBook book, int idx)
         {
-            WriteLine("Edit this record:\r\n");
+           
             bool exitFlag = false;
             do
             {
                 Console.Clear();
+                WriteLine($"{"*============== Instructions =================\r\n",-80}");
+                WriteLine($"{" Edit Title:",-20} {"[1]",20}");
+                WriteLine($"{" Edit Text:",-20} {" [2]",20}");                
+                WriteLine($"{" BACK:",-20} {"[EscKey]",20}");
+                WriteLine($"{"\r\n*=============================================\r\n",-80}");
+
+                WriteLine("Выбранная для редактирования запись:\r\n");
                 book.Records[idx].printRecord();
                 
                 var key = ReadKey();
@@ -308,9 +320,27 @@ namespace NoteBook
                     case (ConsoleKey.Escape):
                         {
                             exitFlag = true;
-                            WriteLine("exit edit record");
+                            //WriteLine("exit edit record");
                             break;
                         }
+                    case (ConsoleKey.D1):
+                        {                           
+                            WriteLine("\r\nEnter new title:\r\n");
+                            var rec = book.Records[idx];
+                            rec.Title = ReadLine();
+                            book.Records[idx] = rec;
+                            break;
+                        }
+                    case (ConsoleKey.D2):
+                        {
+
+                            WriteLine("\r\nEnter new text:\r\n");
+                            var rec = book.Records[idx];
+                            rec.Text = ReadLine();
+                            book.Records[idx] = rec;
+                            break;
+                        }
+
                     default:
                         { break; }
 
@@ -337,11 +367,20 @@ namespace NoteBook
                 {
                     Console.Clear();
 
-                    WriteLine($"{"Navigate:",60} {"[UpKey]/[DownKey]",20}");
-                    WriteLine($"{"Delete:",60} {" [DeleteKey]",20}");
-                    WriteLine($"{"Edit:",60} {"[EnterKey]",20}");
-                    WriteLine($"{"Back to main menu:",60} {"[EscKey]",20}");
+                    WriteLine($"{"*============== Instructions =================\r\n",-80}");
+                    WriteLine($"{" Navigate:",-20} {"[UpKey]/[DownKey]",20}");
+                    WriteLine($"{" Edit:",-20} {"[EnterKey]",20}");
+                    WriteLine($"{" Delete:",-20} {"[DeleteKey]",20}");
+                    WriteLine($"{" BACK:",-20} {"[EscKey]",20}");
+                    WriteLine($"{"\r\n*=============================================\r\n",-80}");
 
+
+                    //WriteLine($"{"Navigate:",60} {"[UpKey]/[DownKey]",20}");
+                    //WriteLine($"{"Delete:",60} {" [DeleteKey]",20}");
+                    //WriteLine($"{"Edit:",60} {"[EnterKey]",20}");
+                    //WriteLine($"{"Back to main menu:",60} {"[EscKey]",20}");
+
+                    WriteLine($"{"Дата создания",20}  {"Заголовок"}");
                     foreach (var rec in book.Records)
                     {
                         if (book.Records.IndexOf(rec) == selectedIndex)
@@ -424,5 +463,65 @@ namespace NoteBook
 
         
         }
+
+        public static void sortMenu(NoteBook book)
+        {
+            bool exitFlag = false;
+            do
+            {
+                Console.Clear();
+                WriteLine($"{"*============== Instructions =================\r\n",-80}");
+                WriteLine($"{" Sort by Title:",-20} {"[1]+",20}");
+                WriteLine($"{" Sort by Text:",-20} {" [2]+",20}");
+                WriteLine($"{" Sort by Cdate:",-20} {" [3]",20}");
+                WriteLine($"{" Sort by Mdate:",-20} {" [4]",20}");
+                WriteLine($"{" BACK:",-20} {"[EscKey]",20}");
+                WriteLine($"{"\r\n*=============================================\r\n",-80}");
+
+                
+
+                var key = ReadKey();
+                switch (key.Key)
+                {
+                    case (ConsoleKey.Escape):
+                        {
+                            exitFlag = true;
+                            //WriteLine("exit edit record");
+                            break;
+                        }
+                    case (ConsoleKey.D1):
+                        {
+                            WriteLine("\r\nSorted by Title:\r\n");
+                            book.Records.Sort( (NoteBookRecord a, NoteBookRecord b) => {
+                                return string.Compare(a.Title, b.Title);
+                            });
+                            ReadKey();
+                            
+                            break;
+                        }
+                    case (ConsoleKey.D2):
+                        {
+                            WriteLine("\r\nSorted by Text:\r\n");
+                            book.Records.Sort((NoteBookRecord a, NoteBookRecord b) => {
+                                return string.Compare(a.Text, b.Text);
+                            });
+                            ReadKey();
+
+                            break;
+                        }
+
+                    default:
+                        { break; }
+
+                }
+            }
+            while (!exitFlag);
+        }
+
+        //public static void updateField(NoteBookRecord rex, string fName)
+        //{ 
+        //    if
+        //    rex[]
+        //}
     }
 }

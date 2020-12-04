@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using static System.Console;
 
 namespace NoteBook
@@ -59,9 +61,13 @@ namespace NoteBook
             this._Title = "";
             this._Text = "";
             this.Title = title;
-            this.Text = text;            
+            this.Text = text;          
+            
+            
 
         }
+         
+
 
         private void updateMdate()
         {
@@ -72,7 +78,7 @@ namespace NoteBook
         {
             //WriteLine($"{"Guid",50}{"Modification date",25}{"Creation Date",25}");
 
-                WriteLine("***************************************************************************");
+                WriteLine("\r\n***************************************************************************");
                 WriteLine($"{"Guid:",-20}{this.Id,50}\r\n{"Modification date:",-20}{this.Mdate,50}\r\n{"Creation Date",-20}{this.Cdate,50}");
                 WriteLine($"Title: {this.Title}");
                 WriteLine($"Text: {this.Text}");
