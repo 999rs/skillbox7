@@ -67,5 +67,18 @@ namespace NoteBook
         {
             this.Mdate = DateTime.Now;
         }
+
+        public void printRecord()
+        {
+            //WriteLine($"{"Guid",50}{"Modification date",25}{"Creation Date",25}");
+
+                WriteLine("***************************************************************************");
+                WriteLine($"{"Guid:",-20}{this.Id,50}\r\n{"Modification date:",-20}{this.Mdate,50}\r\n{"Creation Date",-20}{this.Cdate,50}");
+                WriteLine($"Title: {this.Title}");
+                WriteLine($"Text: {this.Text}");
+            
+
+        }
+
     }
 }

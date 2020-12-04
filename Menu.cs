@@ -22,8 +22,8 @@ namespace NoteBook
                 Console.Clear();
                 WriteLine("MENU:");
                 WriteLine("[1]: Add new Record +");
-                WriteLine("[2]: Edit existing Record ");
-                WriteLine("[3]: Delete Record ");
+                WriteLine("[2]: Edit Mode ");
+                //WriteLine("[3]: Delete Record +");
                 WriteLine("[p]: Print Book +");
                 WriteLine("[e]: Export book to file +");
                 WriteLine("[c]: Clear book (delete all records) +");
@@ -115,10 +115,11 @@ namespace NoteBook
             //WriteLine($"{"Guid",50}{"Modification date",25}{"Creation Date",25}");
             foreach (NoteBookRecord rec in records)
             {
-                WriteLine("***************************************************************************");
-                WriteLine($"{"Guid:",-20}{rec.Id,50}\r\n{"Modification date:",-20}{rec.Mdate,50}\r\n{"Creation Date",-20}{rec.Cdate,50}");
-                WriteLine($"Title: {rec.Title}");
-                WriteLine($"Text: {rec.Text}");            
+                //WriteLine("***************************************************************************");
+                //WriteLine($"{"Guid:",-20}{rec.Id,50}\r\n{"Modification date:",-20}{rec.Mdate,50}\r\n{"Creation Date",-20}{rec.Cdate,50}");
+                //WriteLine($"Title: {rec.Title}");
+                //WriteLine($"Text: {rec.Text}");            
+                rec.printRecord();
             }
 
             WriteLine("\r\nНажмите любую клавишу для возврата в меню.");
@@ -167,7 +168,7 @@ namespace NoteBook
 
         public static void clearNoteBook(NoteBook book)
         {
-            book.Records = new List<NoteBookRecord>();
+            book.Records.Clear();
             WriteLine("\r\n Книга очищена. \r\n Нажмите любую клавишу для возврата в меню.");
             ReadKey();
         }
@@ -224,6 +225,13 @@ namespace NoteBook
             WriteLine("\r\n Импорт завершен. \r\n Нажмите любую клавишу для возврата в меню.");
             ReadKey();
         }
+
+
+        /// <summary>
+        /// вспомогательный - для загрузки конкретного файла при старте
+        /// </summary>
+        /// <param name="book"></param>
+        /// <param name="filename"></param>
         public static void importNoteBook(NoteBook book, string filename)
         {
   
@@ -276,10 +284,45 @@ namespace NoteBook
             ReadKey();
         }
 
+        public static void deleteRecord(NoteBook book, int idx)
+        {
+            book.Records.RemoveAt(idx);
+
+            WriteLine($"\r\n\r\nRecord №[{idx + 1}] deleted. Press any key to continue. ");
+            ReadKey();
+
+        }
+
+        public static void editRecord(NoteBook book, int idx)
+        {
+            WriteLine("Edit this record:\r\n");
+            bool exitFlag = false;
+            do
+            {
+                Console.Clear();
+                book.Records[idx].printRecord();
+                
+                var key = ReadKey();
+                switch (key.Key)
+                {
+                    case (ConsoleKey.Escape):
+                        {
+                            exitFlag = true;
+                            WriteLine("exit edit record");
+                            break;
+                        }
+                    default:
+                        { break; }
+
+                }
+            }
+            while (!exitFlag);
+        
+        }
 
         public static void navigate(NoteBook book) 
         {
-            string keyInput = "";
+           
             int selectedIndex = 0;
             int itemsCount = book.Records.Count;
             if (itemsCount == 0)
@@ -293,6 +336,12 @@ namespace NoteBook
                 do
                 {
                     Console.Clear();
+
+                    WriteLine($"{"Navigate:",60} {"[UpKey]/[DownKey]",20}");
+                    WriteLine($"{"Delete:",60} {" [DeleteKey]",20}");
+                    WriteLine($"{"Edit:",60} {"[EnterKey]",20}");
+                    WriteLine($"{"Back to main menu:",60} {"[EscKey]",20}");
+
                     foreach (var rec in book.Records)
                     {
                         if (book.Records.IndexOf(rec) == selectedIndex)
@@ -327,10 +376,26 @@ namespace NoteBook
 
                         case (ConsoleKey.Enter) :
                             {
-                                WriteLine(selectedIndex);
-                                ReadKey();
+                                //WriteLine(selectedIndex);
+                                editRecord(book, selectedIndex);
+                                //ReadKey();
                                 break;
                             }
+                        case (ConsoleKey.Delete):
+                            {
+                                if (itemsCount > 0)
+                                {
+                                    deleteRecord(book, selectedIndex);
+                                    selectedIndex--;
+                                    itemsCount--;
+                                }
+                                break;
+                            }
+                        case (ConsoleKey.Escape):
+                            {
+                                return;
+                            }
+
                         default:
                             {
                                 break;

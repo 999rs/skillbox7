@@ -27,7 +27,7 @@ namespace NoteBook
             /// - Импорт записей по выбранному диапазону дат
             /// - Упорядочивания записей ежедневника по выбранному полю
 
-            Menu.importNoteBook(currentNoteBook, "test.txt");
+            Menu.importNoteBook(currentNoteBook, "redalert.dat");
 
             Menu.drawMainMenu(currentNoteBook);
 
